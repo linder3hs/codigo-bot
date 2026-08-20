@@ -1,26 +1,195 @@
 @import "tailwindcss";
+@import "streamdown/styles.css";
+@source "../../node_modules/streamdown/dist/*.js";
+@source "../../node_modules/@streamdown/code/dist/*.js";
 
+/* ── Paleta: papel cálido + tinta + bermellón ───────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --paper: #f6efe3;
+  --paper-2: #fffbf2;
+  --ink: #191510;
+  --ink-2: #3d362a;
+  --ink-soft: #7a6e59;
+  --rule: #ddd0b9;
+  --vermilion: #cf3f18;
+  --pine: #0f6b58;
+
+  /* tokens que consume Streamdown (shadcn) */
+  --background: var(--paper-2);
+  --foreground: var(--ink);
+  --card: var(--paper-2);
+  --card-foreground: var(--ink);
+  --muted: #efe6d6;
+  --muted-foreground: var(--ink-soft);
+  --border: var(--rule);
+  --input: var(--rule);
+  --primary: var(--ink);
+  --primary-foreground: var(--paper-2);
+  --radius: 0.5rem;
+  --sidebar: #14120e;
+  --sidebar-foreground: #bdb09a;
+  --sidebar-border: #2c251c;
+  --sidebar-accent: #241d15;
+  --sidebar-accent-foreground: var(--paper-2);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-soft: var(--ink-soft);
+  --color-rule: var(--rule);
+  --color-vermilion: var(--vermilion);
+  --color-pine: var(--pine);
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-karla), ui-sans-serif, sans-serif;
+  --font-mono: var(--font-mono-code), ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: var(--paper);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-karla), ui-sans-serif, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* grano de papel */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+::selection {
+  background: var(--vermilion);
+  color: var(--paper-2);
+}
+
+/* ── Motion ─────────────────────────────────────────────────────── */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+.rise { animation: rise 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+@keyframes blink {
+  0%, 45% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.caret { animation: blink 1s steps(1) infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rise, .caret { animation: none; }
+}
+
+/* ── Bloques de código y prosa del bot ──────────────────────────── */
+.respuesta {
+  font-size: 0.975rem;
+  line-height: 1.72;
+  color: var(--ink-2);
+}
+.respuesta > * + * { margin-top: 0.85em; }
+.respuesta strong { color: var(--ink); font-weight: 700; }
+.respuesta h1, .respuesta h2, .respuesta h3 {
+  font-family: var(--font-fraunces), Georgia, serif;
+  color: var(--ink);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  font-size: 1.08rem;
+  margin-top: 1.4em;
+}
+.respuesta ul, .respuesta ol { padding-left: 1.15rem; }
+.respuesta ul { list-style: none; }
+.respuesta ul > li { position: relative; }
+.respuesta ul > li::before {
+  content: "—";
+  position: absolute;
+  left: -1.15rem;
+  color: var(--vermilion);
+}
+.respuesta ol { list-style: decimal; }
+.respuesta ol > li::marker { color: var(--vermilion); font-family: var(--font-mono-code), monospace; font-size: 0.85em; }
+.respuesta li { margin-block: 0; }
+.respuesta li + li { margin-top: 0.35em; }
+.respuesta ol, .respuesta ul { margin-block: 0.6em; }
+.respuesta a { color: var(--vermilion); text-underline-offset: 3px; text-decoration: underline; }
+.respuesta blockquote {
+  border-left: 2px solid var(--vermilion);
+  padding-left: 0.9rem;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+
+/* código en línea */
+.respuesta :not(pre) > code {
+  font-family: var(--font-mono-code), monospace;
+  font-size: 0.85em;
+  background: #ece2d0;
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* tarjeta de bloque de código: tinta oscura sobre papel */
+.respuesta div:has(> [data-streamdown="code-block-header"]) {
+  background: #14120e;
+  border-color: #14120e;
+  border-radius: 12px;
+  box-shadow: 4px 4px 0 rgb(25 21 16 / 0.13);
+  padding: 0.25rem 0.5rem 0.5rem;
+  gap: 0;
+}
+.respuesta [data-streamdown="code-block-header"] > span {
+  color: #9a8f7b;
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.respuesta div:has(> pre) {
+  background: #14120e;
+  border-color: #2c251c;
+  padding: 0.85rem 1rem;
+}
+.respuesta pre {
+  background: transparent;
+  color: #e8e1d4;
+}
+.respuesta div:has(> [data-streamdown="code-block-header"]) button {
+  background: #241d15;
+  border-color: #3a3126;
+  color: #bdb09a;
+}
+.respuesta div:has(> [data-streamdown="code-block-header"]) button:hover {
+  background: #372e22;
+  color: var(--paper-2);
+}
+
+/* tablas */
+.respuesta table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+.respuesta th, .respuesta td {
+  border: 1px solid var(--rule);
+  padding: 0.45rem 0.65rem;
+  text-align: left;
+}
+.respuesta th {
+  background: #ece2d0;
+  font-family: var(--font-mono-code), monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
