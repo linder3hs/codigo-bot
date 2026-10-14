@@ -5,16 +5,10 @@ import { DefaultChatTransport } from 'ai';
 import { useEffect, useRef, useState } from 'react';
 import { Streamdown } from 'streamdown';
 import { createCodePlugin } from '@streamdown/code';
+import { bot } from '@/bot.config';
 
 // tema oscuro fijo para los bloques de código (la página es papel claro)
 const codePlugin = createCodePlugin({ themes: ['vesper', 'vesper'] });
-
-const SUGERENCIAS = [
-  '¿Qué es una base de datos y cuándo la necesito?',
-  '¿Qué stack me recomiendas para una app de reservas?',
-  'Explícame qué es una API como si tuviera 10 años',
-  '¿Cuál es la diferencia entre frontend y backend?',
-];
 
 export default function Home() {
   const { messages, sendMessage, status, error } = useChat({
@@ -45,10 +39,10 @@ export default function Home() {
           </span>
           <div className="leading-tight">
             <h1 className="font-display text-[1.3rem] font-semibold tracking-tight text-ink">
-              Código Bot
+              {bot.nombre}
             </h1>
             <p className="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-ink-soft">
-              Frontend · Backend · Vercel
+              {bot.etiqueta}
             </p>
           </div>
           <span className="ml-auto hidden font-mono text-[0.62rem] uppercase tracking-[0.18em] text-ink-soft sm:block">
@@ -62,17 +56,19 @@ export default function Home() {
         {messages.length === 0 ? (
           <div className="rise">
             <p className="font-display text-3xl leading-[1.15] tracking-tight text-ink sm:text-[2.6rem]">
-              ¿Qué <em className="text-vermilion not-italic">no</em> entendiste
+              {bot.titular.inicio}{' '}
+              <em className="text-vermilion not-italic">
+                {bot.titular.destacada}
+              </em>
               <br />
-              hoy?
+              {bot.titular.fin}
             </p>
             <p className="mt-3 max-w-md text-[0.95rem] leading-relaxed text-ink-soft">
-              No hay preguntas tontas. Escribe lo que sea de frontend, backend,
-              bases de datos o deploy en Vercel.
+              {bot.bienvenida}
             </p>
 
             <ul className="mt-8 border-t border-rule">
-              {SUGERENCIAS.map((s, i) => (
+              {bot.sugerencias.map((s, i) => (
                 <li
                   key={s}
                   className="rise border-b border-rule"
@@ -120,7 +116,7 @@ export default function Home() {
                   className="rise border-l-2 border-vermilion pl-4 sm:pl-5"
                 >
                   <p className="mb-2 font-mono text-[0.62rem] uppercase tracking-[0.18em] text-ink-soft">
-                    código bot
+                    {bot.nombre}
                   </p>
                   <div className="respuesta">
                     <Streamdown
@@ -163,7 +159,7 @@ export default function Home() {
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Escribe tu pregunta…"
+            placeholder={bot.placeholder}
             aria-label="Tu pregunta"
             autoComplete="off"
             className="min-w-0 flex-1 bg-transparent py-1.5 text-[0.95rem] text-ink outline-none placeholder:text-ink-soft/70"
@@ -187,7 +183,7 @@ export default function Home() {
           </button>
         </div>
         <p className="mx-auto max-w-3xl px-5 pb-2.5 font-mono text-[0.6rem] uppercase tracking-[0.15em] text-ink-soft/80">
-          25 preguntas por hora · solo temas de código
+          {bot.limitePorHora} preguntas por hora · {bot.pie}
         </p>
       </form>
     </div>

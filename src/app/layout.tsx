@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Karla, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
+import { bot, SITIO } from "@/bot.config";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -18,48 +19,31 @@ const mono = JetBrains_Mono({
   subsets: ["latin"],
 });
 
-const SITIO = "https://codigo-bot-five.vercel.app";
-const TITULO = "Código Bot · Tutor de Frontend, Backend y Vercel";
-const DESCRIPCION =
-  "Bot que explica programación en español simple para quienes recién empiezan: HTML, CSS, JavaScript, React, Next.js, Node, Python, bases de datos y deploy en Vercel. Pregúntale qué stack usar para tu proyecto.";
-
 export const metadata: Metadata = {
   metadataBase: new URL(SITIO),
   title: {
-    default: TITULO,
-    template: "%s · Código Bot",
+    default: bot.titulo,
+    template: `%s · ${bot.nombre}`,
   },
-  description: DESCRIPCION,
-  applicationName: "Código Bot",
+  description: bot.descripcion,
+  applicationName: bot.nombre,
   category: "education",
-  keywords: [
-    "aprender a programar",
-    "tutor de programación",
-    "vibecoding",
-    "frontend",
-    "backend",
-    "Next.js",
-    "React",
-    "bases de datos",
-    "deploy en Vercel",
-    "qué stack usar",
-    "programación en español",
-  ],
-  authors: [{ name: "Linder Hassinger" }],
-  creator: "Linder Hassinger",
+  keywords: bot.keywords,
+  authors: [{ name: bot.autor }],
+  creator: bot.autor,
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     locale: "es_ES",
     url: SITIO,
-    siteName: "Código Bot",
-    title: TITULO,
-    description: DESCRIPCION,
+    siteName: bot.nombre,
+    title: bot.titulo,
+    description: bot.descripcion,
   },
   twitter: {
     card: "summary_large_image",
-    title: TITULO,
-    description: DESCRIPCION,
+    title: bot.titulo,
+    description: bot.descripcion,
   },
   robots: {
     index: true,

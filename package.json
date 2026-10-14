@@ -1,6 +1,8 @@
 {
   "name": "codigo-bot",
   "version": "0.1.0",
+  "description": "Plantilla open source para crear tu propio bot tutor con Next.js, AI SDK y DeepSeek",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "dev": "next dev",

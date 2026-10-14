@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
+import { bot } from "@/bot.config";
 
-export const alt = "Código Bot · Tutor de Frontend, Backend y Vercel";
+export const alt = bot.titulo;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -63,7 +64,7 @@ export default async function Image() {
           </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ fontSize: 38, letterSpacing: "-0.02em" }}>
-              Código Bot
+              {bot.nombre}
             </div>
             <div
               style={{
@@ -73,7 +74,7 @@ export default async function Image() {
                 letterSpacing: 5,
               }}
             >
-              FRONTEND · BACKEND · VERCEL
+              {bot.etiqueta.toUpperCase()}
             </div>
           </div>
         </div>
@@ -88,16 +89,16 @@ export default async function Image() {
           }}
         >
           <div style={{ display: "flex", gap: 26 }}>
-            <span>¿Qué</span>
-            <span style={{ color: "#cf3f18" }}>no</span>
+            <span>{bot.titular.inicio}</span>
+            <span style={{ color: "#cf3f18" }}>{bot.titular.destacada}</span>
           </div>
-          <div style={{ display: "flex" }}>entendiste hoy?</div>
+          <div style={{ display: "flex" }}>{bot.titular.fin}</div>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
           <div style={{ width: 120, height: 5, background: "#cf3f18" }} />
           <div style={{ fontSize: 26, color: "#3d362a" }}>
-            Tu tutor de código, en español simple.
+            {bot.eslogan}
           </div>
         </div>
       </div>

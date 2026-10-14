@@ -1,8 +1,9 @@
 import type { MetadataRoute } from "next";
+import { SITIO } from "@/bot.config";
 
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: { userAgent: "*", allow: "/", disallow: "/api/" },
-    sitemap: "https://codigo-bot-five.vercel.app/sitemap.xml",
+    sitemap: `${SITIO}/sitemap.xml`,
   };
 }
